@@ -23,7 +23,7 @@ module "resource_group" {
   name        = local.name
   environment = local.environment
   label_order = local.label_order
-  location    = "Canada Central"
+  location    = "canadacentral"
 }
 
 ##-----------------------------------------------------------------------------
@@ -113,7 +113,9 @@ module "virtual_machine" {
   image_sku                  = "2019-datacenter"
   image_version              = "latest"
   private_ip_addresses       = ["10.0.2.4"]
-  log_analytics_workspace_id = null
+  disk_size_gb               = 127
+  enable_disk_encryption_set = false
+  diagnostic_setting_enable  = false
 }
 
 resource "random_password" "vm" {
