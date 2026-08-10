@@ -44,8 +44,8 @@ module "vnet" {
 ## Subnets
 ##-----------------------------------------------------------------------------
 module "subnet" {
-  source              = "terraform-az-modules/subnet/azurerm"
-  version             = "1.0.2"
+  source               = "terraform-az-modules/subnet/azurerm"
+  version              = "1.0.2"
   environment          = local.environment
   label_order          = local.label_order
   resource_group_name  = module.resource_group.resource_group_name
@@ -76,15 +76,15 @@ module "network_security_group" {
   subnet_ids          = [module.subnet.subnet_ids["vm-subnet"]]
   inbound_rules = [
     {
-      name                      = "ssh-from-bastion"
-      priority                  = 100
-      access                    = "Allow"
-      protocol                  = "Tcp"
-      source_address_prefix     = local.bastion_cidr
-      source_port_range         = "*"
+      name                       = "ssh-from-bastion"
+      priority                   = 100
+      access                     = "Allow"
+      protocol                   = "Tcp"
+      source_address_prefix      = local.bastion_cidr
+      source_port_range          = "*"
       destination_address_prefix = "*"
-      destination_port_range    = "22"
-      description               = "Allow SSH from Bastion subnet"
+      destination_port_range     = "22"
+      description                = "Allow SSH from Bastion subnet"
     }
   ]
   enable_diagnostic = false
@@ -94,25 +94,25 @@ module "network_security_group" {
 ## Virtual Machine
 ##-----------------------------------------------------------------------------
 module "virtual_machine" {
-  source              = "terraform-az-modules/virtual-machine/azurerm"
-  version             = "1.2.0"
-  name                = local.name
-  environment         = local.environment
-  label_order         = local.label_order
-  resource_group_name = module.resource_group.resource_group_name
-  location            = module.resource_group.resource_group_location
-  is_vm_windows       = true
-  subnet_id           = module.subnet.subnet_ids["vm-subnet"]
-  network_security_group_id = module.network_security_group.network_security_group_id
-  vm_size             = "Standard_B1s"
-  computer_name       = "app-win-comp"
-  admin_username      = local.admin_username
-  admin_password      = random_password.vm.result
-  image_publisher     = "MicrosoftWindowsServer"
-  image_offer         = "WindowsServer"
-  image_sku           = "2019-datacenter"
-  image_version       = "latest"
-  private_ip_addresses = ["10.0.2.4"]
+  source                     = "terraform-az-modules/virtual-machine/azurerm"
+  version                    = "1.2.0"
+  name                       = local.name
+  environment                = local.environment
+  label_order                = local.label_order
+  resource_group_name        = module.resource_group.resource_group_name
+  location                   = module.resource_group.resource_group_location
+  is_vm_windows              = true
+  subnet_id                  = module.subnet.subnet_ids["vm-subnet"]
+  network_security_group_id  = module.network_security_group.network_security_group_id
+  vm_size                    = "Standard_B1s"
+  computer_name              = "app-win-comp"
+  admin_username             = local.admin_username
+  admin_password             = random_password.vm.result
+  image_publisher            = "MicrosoftWindowsServer"
+  image_offer                = "WindowsServer"
+  image_sku                  = "2019-datacenter"
+  image_version              = "latest"
+  private_ip_addresses       = ["10.0.2.4"]
   log_analytics_workspace_id = null
 }
 

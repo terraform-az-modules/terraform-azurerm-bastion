@@ -1,189 +1,158 @@
-##-----------------------------------------------------------------------------
-## Variables
-##-----------------------------------------------------------------------------
-variable "label_order" {
-  type        = list(string)
-  default     = ["name", "environment"]
-  description = "Label order, e.g. sequence of application name and environment `name`,`environment`."
-}
-
-variable "custom_name" {
-  type        = string
-  default     = null
-  description = "Custom name for resources. When null, the module uses the `name` value."
-}
-
-variable "deployment_mode" {
-  type        = string
-  default     = "terraform"
-  description = "Deployment mode passed to the labels module."
-}
-
-variable "extra_tags" {
-  type        = map(string)
-  default     = {}
-  description = "Additional tags to add to all resources."
-}
-
-#Module      : LABEL
-#Description : Terraform label module variables.
 variable "name" {
   type        = string
   default     = "app"
-  description = "Name  (e.g. `app` or `cluster`)."
+  description = "Name (e.g. app or cluster)."
 }
 
 variable "environment" {
   type        = string
   default     = "app-test"
-  description = "Environment (e.g. `prod`, `dev`, `staging`)."
+  description = "Environment (e.g. prod, dev, staging)."
 }
 
+variable "label_order" {
+  type        = list(string)
+  default     = ["name", "environment"]
+  description = "Label order."
+}
 
 variable "managedby" {
   type        = string
-  default     = "CloudDrove"
-  description = "ManagedBy, eg ''."
+  default     = "Az-Terraform Modules"
+  description = "ManagedBy tag value."
 }
-
 
 variable "resource_group_name" {
   type        = string
   default     = null
-  description = "A container that holds related resources for an Azure solution"
+  description = "Resource group name."
 }
 
 variable "location" {
   type        = string
-  default     = "Canada Central"
-  description = "A location the resources"
+  default     = "eastus"
+  description = "Azure location."
 }
 
 variable "public_ip_allocation_method" {
   type        = string
   default     = "Static"
-  description = "Defines the allocation method for this IP address. Possible values are Static or Dynamic"
-
-  validation {
-    condition     = contains(["Static", "Dynamic"], var.public_ip_allocation_method)
-    error_message = "public_ip_allocation_method must be either Static or Dynamic."
-  }
-
+  description = "Public IP allocation method."
 }
 
 variable "public_ip_sku" {
   type        = string
   default     = "Standard"
-  description = "The SKU of the Public IP. Accepted values are Basic and Standard. Defaults to Standard."
-
-  validation {
-    condition     = contains(["Basic", "Standard"], var.public_ip_sku)
-    error_message = "public_ip_sku must be either Basic or Standard."
-  }
+  description = "Public IP SKU."
 }
-
 
 variable "enable_copy_paste" {
   type        = bool
   default     = true
-  description = "Is Copy/Paste feature enabled for the Bastion Host?"
+  description = "Enable copy/paste for Bastion."
 }
 
 variable "enable_file_copy" {
   type        = bool
   default     = false
-  description = "Is File Copy feature enabled for the Bastion Host. Only supported whne `sku` is `Standard`"
+  description = "Enable file copy for Bastion. Standard/Premium only."
 }
 
 variable "bastion_host_sku" {
   type        = string
   default     = "Basic"
-  description = "The SKU of the Bastion Host. Accepted values are `Basic`, `Standard`, and `Premium`."
-
-  validation {
-    condition     = contains(["Basic", "Standard", "Premium"], var.bastion_host_sku)
-    error_message = "bastion_host_sku must be one of Basic, Standard, or Premium."
-  }
+  description = "Bastion SKU: Basic, Standard, or Premium."
 }
 
 variable "enable_ip_connect" {
   type        = bool
   default     = false
-  description = "Is IP Connect feature enabled for the Bastion Host?"
+  description = "Enable IP connect feature."
 }
 
 variable "scale_units" {
   type        = number
   default     = 2
-  description = "The number of scale units with which to provision the Bastion Host. Possible values are between `2` and `50`. `scale_units` only can be changed when `sku` is `Standard`. `scale_units` is always `2` when `sku` is `Basic`."
+  description = "Scale units for Standard SKU."
 }
 
 variable "enable_shareable_link" {
   type        = bool
   default     = false
-  description = "Is Shareable Link feature enabled for the Bastion Host. Only supported whne `sku` is `Standard`"
+  description = "Enable shareable link. Standard/Premium only."
 }
 
 variable "enable_tunneling" {
   type        = bool
   default     = false
-  description = "Is Tunneling feature enabled for the Bastion Host. Only supported whne `sku` is `Standard`"
+  description = "Enable tunneling. Standard/Premium only."
+}
+
+variable "enable_kerberos" {
+  type        = bool
+  default     = false
+  description = "Enable Kerberos authentication. Standard/Premium only."
+}
+
+variable "private_only_enabled" {
+  type        = bool
+  default     = false
+  description = "Deploy Bastion in private-only mode. Premium only."
+}
+
+variable "create_public_ip" {
+  type        = bool
+  default     = true
+  description = "Create a public IP for Bastion. Must be false for private-only Premium deployment."
 }
 
 variable "enabled" {
   type        = bool
   default     = true
-  description = "Set to false to prevent the module from creating any resources."
+  description = "Set to false to prevent module creation."
 }
 
 variable "repository" {
   type        = string
-  default     = "https://github.com/clouddrove/terraform-azure-bastion.git"
-  description = "Terraform current module repo"
+  default     = "https://github.com/terraform-az-modules/terraform-azurerm-bastion.git"
+  description = "Module repository."
 }
 
 variable "ddos_protection_mode" {
   type        = string
   default     = "VirtualNetworkInherited"
-  description = "The DDoS protection mode of the public IP"
+  description = "Public IP DDoS protection mode."
 }
 
 variable "ddos_protection_plan_id" {
   type        = string
   default     = null
-  description = "The ID of the DDoS protection plan associated with the Public IP"
+  description = "DDoS protection plan ID."
 }
 
 variable "zone" {
   type        = string
   default     = null
-  description = "The Zone for the resources (e.g., `1`, `2`, `3`)."
+  description = "Zone for the public IP."
 }
 
 variable "domain_name_label" {
   type        = string
   default     = null
-  description = "The domain name label for the Azure Bastion Service host. Leave empty for no label."
+  description = "Public IP DNS label."
 }
 
 variable "subnet_id" {
   type        = string
   default     = null
-  description = "The ID of the Subnet where this Network Interface should be located in."
+  description = "AzureBastionSubnet ID."
 }
 
-## enable diagnostic setting
 variable "log_analytics_destination_type" {
   type        = string
   default     = "AzureDiagnostics"
-  description = "Possible values are AzureDiagnostics and Dedicated, default to AzureDiagnostics. When set to Dedicated, logs sent to a Log Analytics workspace will go into resource specific tables, instead of the legacy AzureDiagnostics table."
-
-  validation {
-    condition     = contains(["AzureDiagnostics", "Dedicated"], var.log_analytics_destination_type)
-    error_message = "log_analytics_destination_type must be either AzureDiagnostics or Dedicated."
-  }
+  description = "AzureDiagnostics or Dedicated."
 }
-
 
 variable "diagnostic_setting_enable" {
   type    = bool
@@ -195,35 +164,52 @@ variable "log_analytics_workspace_id" {
   default = null
 }
 
-
 variable "log_enabled" {
   type        = bool
   default     = true
-  description = " Is this Diagnostic Log enabled? Defaults to true."
+  description = "Enable Bastion logs."
 }
 
 variable "storage_account_id" {
   type        = string
   default     = null
-  description = "The ID of the Storage Account where logs should be sent."
+  description = "Storage account ID for diagnostics."
 }
 
 variable "eventhub_name" {
   type        = string
   default     = null
-  description = "Specifies the name of the Event Hub where Diagnostics Data should be sent."
+  description = "Event Hub name for diagnostics."
 }
 
 variable "eventhub_authorization_rule_id" {
   type        = string
   default     = null
-  description = "Specifies the ID of an vent Hub Namespace Authorization Rule used to send Diagnostics Data."
+  description = "Event Hub authorization rule ID for diagnostics."
 }
 
 variable "metric_enabled" {
   type        = bool
   default     = true
-  description = "Is this Diagnostic Metric enabled? Defaults to True."
+  description = "Enable Bastion metrics."
+}
+
+variable "enable_public_ip_diagnostics" {
+  type        = bool
+  default     = true
+  description = "Enable diagnostics for the Bastion public IP resource."
+}
+
+variable "bastion_log_categories" {
+  type        = list(string)
+  default     = ["BastionAuditLogs"]
+  description = "Bastion diagnostic log categories."
+}
+
+variable "bastion_metric_categories" {
+  type        = list(string)
+  default     = ["AllMetrics"]
+  description = "Bastion diagnostic metric categories."
 }
 
 variable "pip_logs" {
@@ -232,7 +218,6 @@ variable "pip_logs" {
     category       = optional(list(string))
     category_group = optional(list(string))
   })
-
   default = {
     enabled        = true
     category_group = ["AllLogs"]
