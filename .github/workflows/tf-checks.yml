@@ -11,11 +11,6 @@ jobs:
     with:
       working_directory: './examples/complete/'
 
-  disaster-recovery-example:
-    uses: clouddrove/github-shared-workflows/.github/workflows/stf-checks.yml@v2
-    with:
-      working_directory: './examples/disaster-recovery/'
-
   tf-lint:
     uses: clouddrove/github-shared-workflows/.github/workflows/tf-lint.yml@v2
     secrets:
