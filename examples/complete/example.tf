@@ -2,8 +2,6 @@ provider "azurerm" {
   features {}
 }
 
-provider "random" {}
-
 locals {
   name           = "app"
   environment    = "test"
