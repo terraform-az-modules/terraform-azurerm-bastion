@@ -93,7 +93,7 @@ module "network_security_group" {
 ##-----------------------------------------------------------------------------
 module "virtual_machine" {
   source                     = "terraform-az-modules/virtual-machine/azurerm"
-  version                    = "1.2.0"
+  version                    = "1.3.0"
   name                       = local.name
   environment                = local.environment
   label_order                = local.label_order
